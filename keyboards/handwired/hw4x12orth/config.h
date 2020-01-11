@@ -22,9 +22,9 @@
 #define VENDOR_ID       0xFEED
 #define PRODUCT_ID      0x0A0C
 #define DEVICE_VER      0x0444
-#define MANUFACTURER    NINU
-#define PRODUCT         MRNINU
-#define DESCRIPTION     A 40 percent for Ninad
+#define MANUFACTURER    HANDWIRED
+#define PRODUCT         HW4X12ORTH
+#define DESCRIPTION     A 4x12 key ortholinear handwired
 
 /* key matrix size */
 #define MATRIX_ROWS 4
@@ -49,7 +49,7 @@
 
 #define BACKLIGHT_PIN D3
 //#define BACKLIGHT_BREATHING
-#define BACKLIGHT_LEVELS 3
+#define BACKLIGHT_LEVELS 10
 
 // enable RGB underglow
 #define RGB_DI_PIN D2
@@ -60,7 +60,7 @@
 #define RGBLIGHT_VAL_STEP 8
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
-#define DEBOUNCE 5
+#define DEBOUNCING_DELAY 5
 
 /* define if matrix has ghost (lacks anti-ghosting diodes) */
 //#define MATRIX_HAS_GHOST
