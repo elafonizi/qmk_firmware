@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
   LT(_MOUSECTRL, KC_ESCAPE), KC__VOLDOWN, KC__VOLUP, KC__MUTE, KC_BRMD, KC_BRMU, KC_NO, KC_NO, KC_UP, KC_NO, KC_PGUP, RGBCNTRL, KC_NO, KC_NO, KC_NO,  \
   OSXSCRN1, OSXSCRN2, OSXSCRN3, OSXSCRN4, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, KC_TRNS, KC_NO, KC_NO, KC_NO,  \
-  KC_TRNS, DF(_DVORAK), DF(_QWERTY), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_TRNS, KC_NO,  \
+  KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_TRNS, KC_NO,  \
   KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS  \
 ),
 
@@ -109,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
   RGB_TOG, RGB_MOD, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_M_P, RGB_M_SW, RGB_M_K, RGB_M_X, RGB_M_G, KC_TRNS, KC_NO, KC_NO, KC_NO,  \
   KC_NO, RGB_RMOD, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, RGB_M_B, RGB_M_SN, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  \
-  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, RGB_M_R, KC_NO, BL_TOGG, BL_STEP, BL_INC, BL_ON, KC_NO, KC_TRNS, KC_NO,  \
+  KC_NO, DF(_DVORAK), DF(_QWERTY), KC_NO, KC_NO, KC_NO, RGB_M_R, KC_NO, BL_TOGG, BL_STEP, BL_INC, BL_ON, KC_NO, KC_TRNS, KC_NO,  \
   RESET, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO, BL_BRTG, BL_DEC, BL_OFF, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS \
 ),
 
@@ -136,10 +136,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef BACKLIGHT_ENABLE
   extern backlight_config_t backlight_config;
 
-  inline void enable_backright(bool on) {
+  inline void enable_backlight(bool on) {
       backlight_config.enable = on;
-      if (backlight_config.raw == 1) // enabled but level = 0
-          backlight_config.level = 1;
+      //if (backlight_config.raw == 1) // enabled but level = 0
+          //backlight_config.level = 1;
       eeconfig_update_backlight(backlight_config.raw);
       // dprintf("backlight toggle: %u\n", backlight_config.enable);
       backlight_set(backlight_config.enable ? backlight_config.level : 0);
@@ -153,17 +153,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   void bl_breath_start(uint8_t speed) {
 
-    bl_breath_on = true;
-    bl_breath_speed = speed;
-    bl_breath_backup = backlight_config;
+    if (backlight_config.level > 0) {
+      bl_breath_on = true;
+      bl_breath_speed = speed;
+      bl_breath_backup = backlight_config;
+    }
   }
 
   void bl_breath_end(void) {
 
-    bl_breath_on = false;
-    backlight_config = bl_breath_backup;
-    eeconfig_update_backlight(backlight_config.raw);
-    backlight_set(backlight_config.enable ? backlight_config.level : 0);
+
+    if (backlight_config.level > 0) {
+      bl_breath_on = false;
+      backlight_config = bl_breath_backup;
+      eeconfig_update_backlight(backlight_config.raw);
+      backlight_set(backlight_config.enable ? backlight_config.level : 0);
+    }
   }
 
   void bl_breath_update(void) {
@@ -174,10 +179,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         bl_breath_count = 0;
 
         backlight_config.level += bl_breath_updown;
-        bl_breath_updown = (backlight_config.level > BACKLIGHT_LEVELS) ? -1 :
-                          (backlight_config.level <= 0) ? 1 :
-                          bl_breath_updown;
-        enable_backright(true);
+        bl_breath_updown = (backlight_config.level > (BACKLIGHT_LEVELS-10)) ? -1 : (backlight_config.level <= 0) ? 1 : bl_breath_updown;
+        enable_backlight(true);
       }
     }
   }
@@ -205,7 +208,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case SYMBOLS:
       if (record->event.pressed) {
-        BL_BREATH_START(200);
+        BL_BREATH_START(150);
         layer_on(_SYMBOLS);
       } else {
         BL_BREATH_END();
@@ -214,7 +217,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case CONTROL:
       if (record->event.pressed) {
-        BL_BREATH_START(254);
+        BL_BREATH_START(100);
         layer_on(_CONTROL);
       } else {
         BL_BREATH_END();
