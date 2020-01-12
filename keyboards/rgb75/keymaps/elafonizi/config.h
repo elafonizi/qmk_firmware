@@ -1,0 +1,26 @@
+#include "config_common.h"
+
+/* enable mouse keys */
+#ifdef MOUSEKEY_ENABLE
+  #undef MOUSEKEY_INTERVAL
+  #define MOUSEKEY_INTERVAL 5
+
+  #undef MOUSEKEY_TIME_TO_MAX
+  #define MOUSEKEY_TIME_TO_MAX 150
+
+  #undef MOUSEKEY_MAX_SPEED
+  #define MOUSEKEY_MAX_SPEED 3
+
+  #undef MOUSEKEY_MOVE_DELTA
+  #define MOUSEKEY_MOVE_DELTA 3
+
+  #undef MOUSEKEY_DELAY
+  #define MOUSEKEY_DELAY 0
+
+  #undef MOUSEKEY_WHEEL_MAX_SPEED
+  #define MOUSEKEY_WHEEL_MAX_SPEED   2
+
+  #undef MOUSEKEY_WHEEL_TIME_TO_MAX
+  #define MOUSEKEY_WHEEL_TIME_TO_MAX 20
+
+#endif
