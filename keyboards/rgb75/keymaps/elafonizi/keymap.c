@@ -2,11 +2,14 @@
 
 
 #define _QWERTY 0
-#define _DVORAK 1
-#define _SYMBOLS 2
-#define _CONTROL 3
-#define _RGBCNTRL 4
-#define _MOUSECTRL 5
+#define _WINDOWS 1
+#define _DVORAK 2
+#define _SYMBOLS 3
+#define _CONTROL 4
+#define _RGBCNTRL 5
+#define _MOUSECTRL 6
+#define _MACDOWS 7
+
 
 
 
@@ -18,7 +21,20 @@ enum custom_keycodes {
   OSXSCRN1,
   OSXSCRN2,
   OSXSCRN3,
-  OSXSCRN4
+  OSXSCRN4,
+  MACDOWS,
+  MD_WINR,
+  MD_CMDQ,
+  MD_CMDW,
+  MD_CTRLS,
+  MD_CTRLA,
+  MD_CTRLC,
+  MD_CTRLD,
+  MD_CTRLF,
+  MD_CTRLZ,
+  MD_CTRLX,
+  MD_CTRLV,
+  MD_ALTTAB
 };
 
 #define KC_SYMBOLS SYMBOLS
@@ -28,6 +44,7 @@ enum custom_keycodes {
 #define KC_OSXSCRN2  OSXSCRN2
 #define KC_OSXSCRN3  OSXSCRN3
 #define KC_OSXSCRN4  OSXSCRN4
+#define KC_MACDOWS  MACDOWS
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -106,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 [_RGBCNTRL] = layout5x15( \
-   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, DF(_WINDOWS), \
   RGB_TOG, RGB_MOD, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_M_P, RGB_M_SW, RGB_M_K, RGB_M_X, RGB_M_G, KC_TRNS, KC_NO, KC_NO, KC_NO,  \
   KC_NO, RGB_RMOD, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, RGB_M_B, RGB_M_SN, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  \
   KC_NO, DF(_DVORAK), DF(_QWERTY), KC_NO, KC_NO, KC_NO, RGB_M_R, KC_NO, BL_TOGG, BL_STEP, BL_INC, BL_ON, KC_NO, KC_TRNS, KC_NO,  \
@@ -128,6 +145,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	KC_TAB, KC_A, KC_O, KC_E, KC_U, KC_I, KC_D, KC_H, KC_T, KC_N, KC_S, KC_ENT, KC_NO, KC_NO, KC_NO,  \
 	KC_LSFT, KC_SCLN, KC_Q, KC_J, KC_K, KC_X, KC_B, KC_M, KC_W, KC_V, KC_Z, SYMBOLS, KC_NO, KC_TRNS, KC_NO,  \
   KC_NO, KC_LCTL, KC_LALT, KC_LGUI, CONTROL, MO(_CONTROL), KC_SPC, KC_SPC, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS \
+),
+
+[_WINDOWS] = layout5x15( \
+  KC_ESCAPE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_NO, KC_NO, KC_NO, \
+  KC_GRAVE, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC, KC_NO, KC_NO, KC_NO, \
+  KC_TAB, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_NO, KC_NO, KC_NO, \
+  KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_RSFT, SYMBOLS , KC_NO, KC_UP, KC_NO, \
+  KC_NO, KC_LCTL, KC_LALT, LT(_MACDOWS, KC_LGUI), CONTROL, MO(_CONTROL), KC_SPC, KC_SPC, KC_NO, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT \
+),
+
+[_MACDOWS] = layout5x15( \
+  KC_ESCAPE, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_NO, KC_NO, KC_NO, \
+  KC_GRAVE, MD_CMDQ, MD_CMDW, KC_E, MD_WINR, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC, KC_NO, KC_NO, KC_NO, \
+  MD_ALTTAB, MD_CTRLA, MD_CTRLS, MD_CTRLD, MD_CTRLF, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_NO, KC_NO, KC_NO, \
+  KC_LSFT, MD_CTRLZ, MD_CTRLX, MD_CTRLC, MD_CTRLV, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_RSFT, SYMBOLS , KC_NO, KC_UP, KC_NO, \
+  KC_NO, KC_LCTL, KC_LALT, KC_TRNS, KC_NO, KC_NO, KC_SPC, KC_SPC, KC_NO, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT \
 )
 
 };
@@ -249,6 +282,66 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case OSXSCRN4:
       if (record->event.pressed) {
         SEND_STRING(SS_LCTRL(SS_LSFT(SS_LGUI("4"))));
+      }
+      break;
+    case MD_WINR:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LGUI("r"));
+      }
+      break;
+    case MD_CTRLF:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("f"));
+      }
+      break;
+    case MD_CTRLA:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("a"));
+      }
+      break;
+    case MD_CTRLS:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("s"));
+      }
+      break;
+    case MD_CTRLD:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("d"));
+      }
+      break;
+    case MD_CTRLZ:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("z"));
+      }
+      break;
+    case MD_CTRLX:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("x"));
+      }
+      break;
+    case MD_CTRLC:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("c"));
+      }
+      break;
+    case MD_CTRLV:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("v"));
+      }
+      break;
+    case MD_CMDW:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("w"));
+      }
+      break;
+    case MD_CMDQ:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT(SS_TAP(X_F4)));
+      }
+      break;
+    case MD_ALTTAB:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT(SS_TAP(X_TAB)));
       }
       break;
 
