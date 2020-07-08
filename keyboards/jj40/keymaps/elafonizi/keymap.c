@@ -15,13 +15,15 @@ enum custom_keycodes {
   SYMBOLS,
   CONTROL,
   RGBCNTRL,
-  OSXSCRN
+  OSXSCRN3,
+  OSXSCRN4
 };
 
 #define KC_SYMBOLS SYMBOLS
 #define KC_CONTROL CONTROL
 #define KC_RGBCNTRL RGBCNTRL
-#define KC_OSXSCRN  OSXSCRN
+#define KC_OSXSCRN3  OSXSCRN3
+#define KC_OSXSCRN4  OSXSCRN4
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -43,7 +45,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_RSFT, SYMBOLS , \
   KC_NO, KC_LCTL, KC_LALT, KC_LGUI, CONTROL, MO(_CONTROL), KC_SPC,         KC_NO,   KC_NO,   KC_NO,   KC_NO \
 ),
-  
+
 
 /* SYMBOLS
  * ,-----------------------------------------------------------------------------------.
@@ -78,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_CONTROL] = LAYOUT_planck_1x2uR( \
   LT(_MOUSECTRL, KC_ESCAPE), KC__VOLDOWN, KC__VOLUP, KC__MUTE, KC_BRMD, KC_BRMU, KC_NO, KC_NO, KC_UP, KC_NO, KC_PGUP, RGBCNTRL, \
-  KC_NO, KC_NO, KC_NO, OSXSCRN, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, KC_TRNS, \
+  KC_NO, KC_NO, OSXSCRN3, OSXSCRN4, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, KC_TRNS, \
   KC_TRNS, DF(_DVORAK), DF(_QWERTY), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, \
   KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO \
 ),
@@ -216,9 +218,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_RGBCNTRL);
       }
       break;
-    case OSXSCRN:
+    case OSXSCRN4:
       if (record->event.pressed) {
-        SEND_STRING(SS_LCTRL(SS_LSFT(SS_LGUI("4"))));
+        SEND_STRING(SS_LSFT(SS_LGUI("4")));
+      }
+      break;
+    case OSXSCRN3:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LSFT(SS_LGUI("3")));
       }
       break;
     default:
